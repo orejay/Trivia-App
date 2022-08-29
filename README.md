@@ -49,3 +49,17 @@ The application is run on localhost `http://127.0.0.1:5000/`.
 
 **Tests**
 
+In order to run tests you need to create a test database that mirror the original database by running
+
+  ```
+  dropdb trivia_test
+  createdb trivia_test
+  psql trivia_test < trivia.psql
+  python test_flaskr.py
+  ```
+  
+  **Do not** include the drop database line the first time you run the block of code as the database has **not yet** been created
+  
+  ## API Reference
+  
+  
