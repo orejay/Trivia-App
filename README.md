@@ -23,7 +23,7 @@ To start the front end app run
 
   `npm start`
 
-This project is currently run on localhost so the proxy is set to `http://127.0.0.1:5000` for all requests.
+This project is currently run on localhost `http://127.0.0.1:3000` the proxy is set to `http://127.0.0.1:5000` for all requests to the backend.
 
 **Back End**
 
@@ -44,3 +44,8 @@ After installing the requirements, start the app by running
   export FLASK_ENV=development
   flask run
   ```
+
+The application is run on localhost `http://127.0.0.1:5000/`.
+
+
+
