@@ -254,11 +254,75 @@ The API will return four error types when requests fail:
 
 * General:
   * Creates a new question using the submitted question, answer, difficulty and category. Returns a `{'success': True}` json response
+
 * `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"What country is often called 'the greatest country in the world'?", "answer":"Nigeria", "difficulty":"3", "category":"4" }'`
 
   ```
   {
     'success': True
+  }
+  ```
+  
+**POST/search**
+
+* General:
+  * Performs a case insensitive search for questions that contain the keyword searched for.
+
+* `curl http://127.0.0.1:5000/search -X POST -H "Content-Type: application/json" -d '{"searchTerm": "who"}'`
+
+  ```
+   "questions": [
+      {
+        "answer": "Maya Angelou",
+        "category": 4,
+        "difficulty": 2,
+        "id": 5,
+        "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+      },
+      {
+        "answer": "George Washington Carver",
+        "category": 4,
+        "difficulty": 2,
+        "id": 12,
+        "question": "Who invented Peanut Butter?"
+      },
+      {
+        "answer": "Alexander Fleming",
+        "category": 1,
+        "difficulty": 3,
+        "id": 21,
+        "question": "Who discovered penicillin?"
+      },
+      {
+        "answer": "Ronaldo",
+        "category": 4,
+        "difficulty": 5,
+        "id": 25,
+        "question": "who is the goat?"
+      }
+    ],
+    "success": true,
+    "total_questions": 4
+  }
+  ```
+  
+**POST/quizzes**
+
+* General:
+  * Returns one question at a time for the user to answer, depending on the category selected.
+ 
+* `curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [], "quiz_category": {"id":"3"}}'`
+
+  ```
+  {
+    "question": {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    "success": true
   }
   ```
   
@@ -275,3 +339,12 @@ The API will return four error types when requests fail:
   }
   ```
   
+## Deployment N/A
+
+## Authors
+
+Oreoluwa Jaiyesimi and Udacity
+
+## Acknowledgement
+
+The awesome team at Udacity.
