@@ -11,3 +11,10 @@ This project is part of the ALX Udacity Full Stack Nanodegree program.
 All backend code follows [PEP8 style guidelines](https://peps.python.org/pep-0008/).
 
 ## Getting Started
+
+**Pre-requisites and Local Development**
+Developers cloning this project on their computers should already have Python3, pip and node installed.
+
+**Front End**
+
+From the frontend directory run `npm install`
