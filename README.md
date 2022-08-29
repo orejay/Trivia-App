@@ -17,4 +17,24 @@ Developers cloning this project on their computers should already have Python3, 
 
 **Front End**
 
-From the frontend directory run `npm install`
+From the frontend directory run `npm install`. This command installs all the front end dependencies.
+
+This project is currently run on localhost so the proxy is set to `http://127.0.0.1:5000` for all requests.
+
+**Back End**
+
+From the backend folder create a virtual environment by running
+
+  `virtualenv env`
+  
+Activate the virtual environment by running 
+
+  `env/Scripts/activate`
+  
+Run `pip install requirements.txt`. This command installs all required packages which are included in the requirements file.
+
+After installing the requirements, start the app by running
+
+  `export FLASK_APP=flaskr
+  export FLASK_ENV=development
+  flask run`
