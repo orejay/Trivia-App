@@ -9,3 +9,5 @@ This project is a trivia app. Players are allowed to:
 This project is part of the ALX Udacity Full Stack Nanodegree program.
 
 All backend code follows [PEP8 style guidelines](https://peps.python.org/pep-0008/).
+
+## Getting Started
