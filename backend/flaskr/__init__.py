@@ -22,7 +22,7 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     setup_db(app)
-    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+    cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
     @app.after_request
     def after_request(response):
@@ -120,13 +120,17 @@ def create_app(test_config=None):
         category = body.get('quiz_category')
         previous_questions = body.get('previous_questions')
         if (category['id'] != 0):
-            questions = Question.query.filter_by(category=category['id']).all()
+            questions = Question.query.filter_by(
+                category=category['id']).order_by(Question.question).all()
             quiz_number = random.randint(0, len(questions)-1)
-            while quiz_number in previous_questions:
-                quiz_number = random.randint(0, len(questions)-1)
-            question = questions[quiz_number]
+            if previous_questions == []:
+                question = questions[quiz_number]
+            else:
+                while quiz_number in previous_questions:
+                    quiz_number = random.randint(0, len(questions)-1)
+                question = questions[quiz_number]
         else:
-            questions = Question.query.all()
+            questions = Question.query.order_by(Question.question).all()
             quiz_number = random.randint(0, len(questions)-1)
             while quiz_number in previous_questions:
                 quiz_number = random.randint(0, len(questions)-1)
