@@ -88,7 +88,7 @@ The API will return four error types when requests fail:
 
 **End points**
 
-**Get/questions**
+**GET/questions**
 
 * General:
   * Returns an object containing an object of categories, a list of questions, success value, and total number of questions.
@@ -183,6 +183,95 @@ The API will return four error types when requests fail:
     }
   ```
   
-  **Post/questions**
+ **GET/categories**
+ 
+ * General:
+   * Returns an object containing an object of categories and a success value.
+ 
+ * Sample: `curl http://127.0.0.1:5000/categories`
+ 
+  ```
+  {
+    "categories": {
+      "1": "Science", 
+      "2": "Art", 
+      "3": "Geography", 
+      "4": "History", 
+      "5": "Entertainment", 
+      "6": "Sports"
+    }, 
+    "success": true
+  }
+  ```
   
-  * General
+**GET/categories/category_id/questions**
+
+* General:
+  * Returns an object containing a success value, a list of question objects, total number of questions and the current category.
+  * Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1.
+
+* Sample: `curl http://127.0.0.1:5000/categories/2/questions`
+
+  ```
+  {
+    "current_category": "Art", 
+    "questions": [
+      {
+        "answer": "Escher", 
+        "category": 2, 
+        "difficulty": 1, 
+        "id": 16, 
+        "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+      }, 
+      {
+        "answer": "Mona Lisa", 
+        "category": 2, 
+        "difficulty": 3, 
+        "id": 17, 
+        "question": "La Giaconda is better known as what?"
+      }, 
+      {
+        "answer": "One", 
+        "category": 2, 
+        "difficulty": 4, 
+        "id": 18, 
+        "question": "How many paintings did Van Gogh sell in his lifetime?"
+      }, 
+      {
+        "answer": "Jackson Pollock", 
+        "category": 2, 
+        "difficulty": 2, 
+        "id": 19, 
+        "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+      }
+    ], 
+    "success": true, 
+    "total_questions": 4
+  }
+  ```
+  
+**POST/questions**
+
+* General:
+  * Creates a new question using the submitted question, answer, difficulty and category. Returns a `{'success': True}` json response
+* `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"What country is often called 'the greatest country in the world'?", "answer":"Nigeria", "difficulty":"3", "category":"4" }'`
+
+  ```
+  {
+    'success': True
+  }
+  ```
+  
+**DELETE/questions/question_id**
+
+* General
+  * Deletes the question with the given id if it exists and returns a success value.
+
+* `curl -X DELETE http://127.0.0.1:5000/questions/2`
+
+  ```
+  {
+    'success': True
+  }
+  ```
+  
