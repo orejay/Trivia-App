@@ -65,41 +65,58 @@ def create_app(test_config=None):
 
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
     def delete_question(question_id):
-        question = Question.query.get(question_id)
-        question.delete()
+        try:
+            question = Question.query.filter(
+                Question.id == question_id).one_or_none()
 
-        return jsonify({
-            'success': True
-        })
+            if question is None:
+                abort(404)
+
+            question.delete()
+
+            return jsonify({
+                'success': True
+            })
+
+        except:
+            abort(422)
 
     @app.route('/questions', methods=['POST'])
     def add_question():
-        body = request.get_json()
-        new_question = body.get('question')
-        new_answer = body.get('answer')
-        new_difficulty = body.get('difficulty')
-        new_category = body.get('category')
-        question = Question(question=new_question, answer=new_answer,
-                            difficulty=new_difficulty, category=new_category)
-        question.insert()
+        try:
+            body = request.get_json()
+            new_question = body.get('question')
+            new_answer = body.get('answer')
+            new_difficulty = body.get('difficulty')
+            new_category = body.get('category')
+            question = Question(question=new_question, answer=new_answer,
+                                difficulty=new_difficulty, category=new_category)
+            question.insert()
 
-        return jsonify({
-            "success": True,
-        })
+            return jsonify({
+                "success": True,
+            })
+
+        except:
+            abort(422)
 
     @app.route('/search', methods=['POST'])
     def search_question():
-        body = request.get_json()
-        search_term = body.get('searchTerm')
-        questions = Question.query.filter(
-            Question.question.ilike('%'+search_term+'%')).all()
-        page_questions = paginate_questions(request, questions)
+        try:
+            body = request.get_json()
+            search_term = body.get('searchTerm')
+            questions = Question.query.filter(
+                Question.question.ilike('%'+search_term+'%')).all()
+            page_questions = paginate_questions(request, questions)
 
-        return jsonify({
-            "success": True,
-            "questions": page_questions,
-            "total_questions": len(questions),
-        })
+            return jsonify({
+                "success": True,
+                "questions": page_questions,
+                "total_questions": len(questions),
+            })
+
+        except:
+            abort(422)
 
     @app.route('/categories/<int:category_id>/questions')
     def get_by_category(category_id):
@@ -116,37 +133,41 @@ def create_app(test_config=None):
 
     @app.route('/quizzes', methods=['POST'])
     def play_quiz():
-        body = request.get_json()
-        category = body.get('quiz_category')
-        previous_questions = body.get('previous_questions')
-        if (category['id'] != 0):
-            questions = Question.query.filter_by(
-                category=category['id']).order_by(Question.question).all()
-            quiz_number = random.randint(0, len(questions)-1)
-            if previous_questions == []:
-                question = questions[quiz_number]
+        try:
+            body = request.get_json()
+            category = body.get('quiz_category')
+            previous_questions = body.get('previous_questions')
+            if (category['id'] != 0):
+                questions = Question.query.filter_by(
+                    category=category['id']).order_by(Question.question).all()
+                quiz_number = random.randint(0, len(questions)-1)
+                if previous_questions == []:
+                    question = questions[quiz_number]
+                else:
+                    while quiz_number in previous_questions:
+                        quiz_number = random.randint(0, len(questions)-1)
+                    question = questions[quiz_number]
             else:
+                questions = Question.query.order_by(Question.question).all()
+                quiz_number = random.randint(0, len(questions)-1)
                 while quiz_number in previous_questions:
                     quiz_number = random.randint(0, len(questions)-1)
                 question = questions[quiz_number]
-        else:
-            questions = Question.query.order_by(Question.question).all()
-            quiz_number = random.randint(0, len(questions)-1)
-            while quiz_number in previous_questions:
-                quiz_number = random.randint(0, len(questions)-1)
-            question = questions[quiz_number]
-        next_question = {
-            "answer": question.answer,
-            "category": question.category,
-            "difficulty": question.difficulty,
-            "id": question.id,
-            "question": question.question
-        }
+            next_question = {
+                "answer": question.answer,
+                "category": question.category,
+                "difficulty": question.difficulty,
+                "id": question.id,
+                "question": question.question
+            }
 
-        return jsonify({
-            "success": True,
-            "question": next_question
-        })
+            return jsonify({
+                "success": True,
+                "question": next_question
+            })
+
+        except:
+            abort(422)
 
     """
     @TODO:
