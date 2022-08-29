@@ -1,0 +1,132 @@
+.question-view {
+  display: flex;
+  flex-direction: row;
+}
+
+.categories-list {
+  flex-basis: 25%;
+  flex-shrink: 2;
+}
+
+.categories-list > form {
+  width: 60%;
+}
+
+.questions-list {
+  flex-basis: 75%;
+  text-align: center;
+  font-family: 'Product Sans'
+}
+
+.Question-holder {
+  padding: 10px 20px;
+  box-shadow: 0 0 5px #ddd;
+  border-radius: 15px;
+  background-color: whitesmoke;
+  text-align: left;
+  margin: 7px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.Question-holder:hover {
+  box-shadow: 1px 1px 5px #aaa;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.Question-status {
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  width: 200px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: whitesmoke;
+}
+
+.Question {
+  font-size: 21px;
+  width: 100%;
+}
+
+.answer-holder {
+  font-size: 25px;
+  height: 25px;
+  margin: 5px 0px;
+}
+
+.show-answer {
+  width: 100px;
+  height: 25px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: dodgerblue;
+  color: white;
+  padding: 3px 5px;
+  border-radius: 5px;
+  margin-left: 0px !important;
+  cursor: pointer;
+}
+
+.show-answer:hover {
+  background-color: #26eea1;
+  transition: 0.2s ease-in-out;
+  box-shadow: 1px 1px 3px #ccc;
+}
+
+span.page-num {
+  margin: 5px;
+  padding-bottom: 50px;
+  /* color: blue; */
+  font-weight: bolder;
+  font-size: 26px;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.pagination-menu {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+span.page-num:hover {
+  color: #26eea1;
+  transition: 0.3s ease-in-out;
+  text-decoration: underline;
+}
+
+span.page-num.active {
+  color: blue;
+  text-decoration: underline;
+}
+
+img.category {
+  width: 30px;
+  margin-left: 10px;
+}
+
+.cat-li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cat-li:hover {
+  color: #26eea1;
+  transition: 0.2s ease-in-out;
+}
+
+img.delete {
+  width: 20px;
+}
+
+.delete {
+  background-color: whitesmoke;
+}
