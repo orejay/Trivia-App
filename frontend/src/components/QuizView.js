@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import $ from "jquery";
 import "../stylesheets/QuizView.css";
 
-const questionsPerPlay = 5;
+const questionsPerPlay = 3;
 
 class QuizView extends Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class QuizView extends Component {
   };
 
   getNextQuestion = () => {
-    const previousQuestions = [...this.state.previousQuestions];
+    const previousQuestions = this.state.previousQuestions;
     if (this.state.currentQuestion.id) {
       previousQuestions.push(this.state.currentQuestion.id);
     }
@@ -70,6 +70,7 @@ class QuizView extends Component {
           guess: "",
           forceEnd: result.question ? false : true,
         });
+        console.log(result.question, result.end, this.state.forceEnd);
         return;
       },
       error: (error) => {

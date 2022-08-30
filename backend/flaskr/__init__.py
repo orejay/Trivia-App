@@ -134,6 +134,7 @@ def create_app(test_config=None):
     @app.route('/quizzes', methods=['POST'])
     def play_quiz():
         try:
+            end = False
             body = request.get_json()
             category = body.get('quiz_category')
             previous_questions = body.get('previous_questions')
@@ -144,27 +145,36 @@ def create_app(test_config=None):
                 if previous_questions == []:
                     question = questions[quiz_number]
                 else:
-                    while quiz_number in previous_questions:
+                    while questions[quiz_number].id in previous_questions:
                         quiz_number = random.randint(0, len(questions)-1)
                     question = questions[quiz_number]
-            else:
+            elif (category['id'] == 0):
                 questions = Question.query.order_by(Question.question).all()
                 quiz_number = random.randint(0, len(questions)-1)
-                while quiz_number in previous_questions:
-                    quiz_number = random.randint(0, len(questions)-1)
-                question = questions[quiz_number]
-            next_question = {
-                "answer": question.answer,
-                "category": question.category,
-                "difficulty": question.difficulty,
-                "id": question.id,
-                "question": question.question
-            }
+                if previous_questions == []:
+                    question = questions[quiz_number]
+                else:
+                    while questions[quiz_number].id in previous_questions:
+                        quiz_number = random.randint(0, len(questions)-1)
+                    question = questions[quiz_number]
 
-            return jsonify({
-                "success": True,
-                "question": next_question
-            })
+            if (len(previous_questions) < len(questions)):
+                next_question = {
+                    "answer": question.answer,
+                    "category": question.category,
+                    "difficulty": question.difficulty,
+                    "id": question.id,
+                    "question": question.question
+                }
+
+                return jsonify({
+                    "success": True,
+                    "question": next_question,
+                })
+            elif (len(previous_questions) == len(questions)):
+                return jsonify({
+                    "success": True,
+                })
 
         except:
             abort(422)
