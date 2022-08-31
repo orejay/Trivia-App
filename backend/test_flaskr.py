@@ -36,13 +36,30 @@ class TriviaTestCase(unittest.TestCase):
             "question": "What country is often referred to as 'the best country in the world'?"
         }
 
+        self.new_question_error = {
+            "answer": "Nigeria",
+            "category": "a",
+            "difficulty": 2,
+            "id": 5,
+            "question": "What country is often referred to as 'the best country in the world'?"
+        }
+
         self.search_term = {
             "searchTerm": "who"
+        }
+
+        self.search_term_error = {
+            "searchTerm": 4
         }
 
         self.quiz_request_body = {
             "previous_questions": [],
             "quiz_category": {"id": "3"}
+        }
+
+        self.quiz_request_error_body = {
+            "previous_questions": [],
+            "quiz_category": {"id": "a"}
         }
 
     def tearDown(self):
@@ -65,14 +82,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['categories'])
-
-    def test_invalid_pages(self):
-        res = self.client().get('/kiiwtcfy')
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'Page not found')
 
     def test_search_question(self):
         res = self.client().get('/categories/2/questions')
@@ -109,14 +118,54 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['question'])
 
     def test_delete(self):
-        res = self.client().delete('/questions/33')
+        res = self.client().delete('/questions/34')
         data = json.loads(res.data)
 
-        question = Question.query.filter(Question.id == 33).one_or_none()
+        question = Question.query.filter(Question.id == 34).one_or_none()
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(question, None)
+
+    def test_invalid_pages(self):
+        res = self.client().get('/kiiwtcfy')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Page not found')
+
+    def test_delete_non_existing_question_error(self):
+        res = self.client().delete('/questions/1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Unprocessable request')
+
+    def test_search_error(self):
+        res = self.client().post('/search', json=self.search_term_error)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Unprocessable request')
+
+    def test_get_quiz_question_error(self):
+        res = self.client().post('/quizzes', json=self.quiz_request_error_body)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Unprocessable request')
+
+    def test_add_question_error(self):
+        res = self.client().post('/questions', json=self.new_question_error)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Unprocessable request')
 
 
 # Make the tests conveniently executable

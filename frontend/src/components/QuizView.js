@@ -15,6 +15,7 @@ class QuizView extends Component {
       numCorrect: 0,
       currentQuestion: {},
       guess: "",
+      result: {},
       forceEnd: false,
     };
   }
@@ -47,6 +48,7 @@ class QuizView extends Component {
     if (this.state.currentQuestion.id) {
       previousQuestions.push(this.state.currentQuestion.id);
     }
+
     console.log(this.state.previousQuestions);
 
     $.ajax({
@@ -67,6 +69,7 @@ class QuizView extends Component {
           showAnswer: false,
           previousQuestions: previousQuestions,
           currentQuestion: result.question,
+          result: result,
           guess: "",
           forceEnd: result.question ? false : true,
         });
@@ -78,6 +81,7 @@ class QuizView extends Component {
         return;
       },
     });
+    console.log(this.state.result);
     console.log(this.state.quizCategory);
   };
 

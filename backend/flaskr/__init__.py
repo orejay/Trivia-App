@@ -134,7 +134,6 @@ def create_app(test_config=None):
     @app.route('/quizzes', methods=['POST'])
     def play_quiz():
         try:
-            end = False
             body = request.get_json()
             category = body.get('quiz_category')
             previous_questions = body.get('previous_questions')
@@ -158,22 +157,17 @@ def create_app(test_config=None):
                         quiz_number = random.randint(0, len(questions)-1)
                     question = questions[quiz_number]
 
-            if (len(previous_questions) < len(questions)):
-                next_question = {
-                    "answer": question.answer,
-                    "category": question.category,
-                    "difficulty": question.difficulty,
-                    "id": question.id,
-                    "question": question.question
-                }
+            if (len(previous_questions) <= len(questions)):
+                next_question = question.format()
 
                 return jsonify({
                     "success": True,
                     "question": next_question,
                 })
-            elif (len(previous_questions) == len(questions)):
+            elif (len(previous_questions) > len(questions)):
                 return jsonify({
                     "success": True,
+                    "question": {}
                 })
 
         except:
